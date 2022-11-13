@@ -1,4 +1,4 @@
-# batch-extract
+# extract
 
 ## Project setup
 ```

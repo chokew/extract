@@ -7,7 +7,7 @@ import 'element-plus/dist/index.css'
 import './style/index.scss'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-import './utils/indexdb.ts'
+// import './utils/indexdb.ts'
 
 const app = createApp(App)
 app.use(store, key).use(router).use(ElementPlus).mount("#app");

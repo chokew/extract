@@ -1,5 +1,6 @@
 <template>
-  <el-dialog v-model="dialogVisible" :before-close="beforeClose" width="600px" :close-on-click-modal="false" :destroy-on-close="true">
+  <el-dialog v-model="dialogVisible" :before-close="beforeClose" width="600px" :close-on-click-modal="false"
+    :destroy-on-close="true">
     <el-upload class="upload-demo" drag action="" multiple accept=".zip,.7z,.rar" :http-request="httpRequest"
       :on-remove="onRemove" :before-upload="beforeUpload">
       <el-icon class="el-icon--upload">
@@ -22,7 +23,9 @@
         <el-input v-model="form.dirPath">
           <template #append>
             <el-button circle @click="clickChooseFolder">
-              <el-icon><FolderOpened /></el-icon>
+              <el-icon>
+                <FolderOpened />
+              </el-icon>
             </el-button>
           </template>
         </el-input>
@@ -44,8 +47,8 @@
       </el-form-item>
       <el-form-item label="删除方式" v-if="form.delete">
         <el-radio-group v-model="form.deleteType">
-          <el-radio label="trashItem">删除到回收站</el-radio>
           <el-radio label="unlink">直接删除</el-radio>
+          <el-radio label="trashItem">删除到回收站</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -68,7 +71,7 @@ const store = useStore()
 
 const fileList = ref<any[]>([]);
 
-let form = reactive({
+let form: any = reactive({
   extractType: 'extract',
   password: '',
   delete: false,
@@ -83,8 +86,18 @@ const props = defineProps({
 })
 
 watch(() => props.dialogVisible, (val) => {
-  if(val) {
+  if (val) {
     fileList.value = []
+    Object.keys(form).forEach((e) => {
+      let item = localStorage.getItem(e)
+      if (item !== null) {
+        if (e !== 'delete') {
+          form[e] = item
+        } else {
+          form.delete = item === 'false' ? false : true
+        }
+      }
+    })
   }
 })
 
@@ -117,14 +130,12 @@ const clickChooseFolder = () => {
 }
 
 const confirm = () => {
-  
-
   let activeTaskList = fileList.value.map(val => {
     let outputDir = ''
-    if(form.outputType === '1') {
+    if (form.outputType === '1') {
       let arr = val.path.match(/(.*)\\\w+\.\w+/)
       outputDir = arr[1]
-    } else if(form.outputType === '2') {
+    } else if (form.outputType === '2') {
       let arr = val.path.match(/(.*)\.\w+/)
       outputDir = arr[1]
     } else {
@@ -144,7 +155,7 @@ const confirm = () => {
     }
   })
   console.log(activeTaskList)
-  
+
   store.commit('addTask', activeTaskList)
   emit('update:dialogVisible', false)
 }

@@ -4,7 +4,7 @@ import Seven from 'node-7z'
 import sevenBin from '7zip-bin'
 import { unlink } from "fs/promises";
 // import { shell } from 'electron';
-import { addData, updateData } from '../utils/indexdb'
+// import { addData, updateData } from '../utils/indexdb'
 
 const pathTo7zip = sevenBin.path7za
 const { Notification, shell } = require('@electron/remote')

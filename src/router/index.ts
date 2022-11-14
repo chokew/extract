@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw, createWebHashHistory } from 'vue-router'
 import Layout from '../views/layout/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -20,13 +20,18 @@ const routes: Array<RouteRecordRaw> = [
         path: 'task',
         name: 'task',
         component: () => import('../views/task/index.vue')
+      },
+      {
+        path: 'setting',
+        name: 'setting',
+        component: () => import('../views/setting/index.vue')
       }
     ]
   },
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   routes
 })
 

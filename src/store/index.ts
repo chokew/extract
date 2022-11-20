@@ -6,7 +6,7 @@ import { unlink } from "fs/promises";
 // import { shell } from 'electron';
 // import { addData, updateData } from '../utils/indexdb'
 
-const pathTo7zip = sevenBin.path7za
+const pathTo7zip = sevenBin.path7za.replace('app.asar', 'app.asar.unpacked')
 const { Notification, shell } = require('@electron/remote')
 
 export interface State {
@@ -57,6 +57,7 @@ export const store = createStore<State>({
   actions: {
     extract({ commit, state }, {task, pwd}) {
       return new Promise((resolve, reject) => {
+        console.log(sevenBin)
         const myStream = Seven[task.extractType](task.path, `${task.outputDir}\\`, {
           recursive: true,
           $bin: pathTo7zip,

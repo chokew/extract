@@ -29,10 +29,6 @@ export const store = createStore<State>({
   },
   mutations: {
     addTask(state, activeTaskList: any) {
-      // activeTaskList.forEach((task: any) => {
-      //   addData({id: task.uid, ...task})
-      // })
-
       state.activeTaskList = [...state.activeTaskList, ...activeTaskList]
       store.dispatch('startTask')
     },
@@ -60,17 +56,13 @@ export const store = createStore<State>({
   },
   actions: {
     extract({ commit, state }, {task, pwd}) {
-      // let task = state.activeTaskList[i]
       return new Promise((resolve, reject) => {
         const myStream = Seven[task.extractType](task.path, `${task.outputDir}\\`, {
           recursive: true,
           $bin: pathTo7zip,
-          // password: '多美绳艺资源mei4321',
           password: pwd || ' ',
-          // $cherryPick: ['*.7z', '*.mp4', '*.mov', '*.m4v'],
           $cherryPick: task.cherryPick,
           $progress: true,
-          // overwrite: true
         })
         myStream.on('data', function (data: any) {
           console.log(data)
@@ -80,16 +72,9 @@ export const store = createStore<State>({
           task.percent = progress.percent
         })
         myStream.on('end', function () {
-          // console.log(myStream)
           if (!myStream.err && myStream.info.get('Files') !== '0') {
             resolve(true)
           } else {
-            // task.status = 'failed'
-            // task.msg = ''
-            // if(myStream.info.has(`Can't open as archive`)) {
-            //   task.msg = '密码错误'
-            // }
-            // state.failedTaskList.push(task)
             if(myStream.info.get('Files') === '0') {
               reject({msg: '无需要解压的类型'})
             } else {
@@ -98,7 +83,6 @@ export const store = createStore<State>({
           }
         })
         myStream.on('error', (err: any) => {
-          // console.log(err)
           reject(err)
         })
       })
@@ -109,13 +93,6 @@ export const store = createStore<State>({
 
       let index = state.activeTaskList.findIndex(val => val.status === 'wait')
       if(index !== -1) {
-        // try {
-        //   state.activeTaskList[index].status = 'extract'
-        //   await store.dispatch('extract', state.activeTaskList[index])
-        // } finally {
-        //   state.activeTaskList.splice(index, 1)
-        //   store.dispatch('startTask')
-        // }
         let task = state.activeTaskList[index]
         task.status = 'extract'
         
@@ -144,7 +121,6 @@ export const store = createStore<State>({
             }
           }
         }
-        // updateData(task)
         state.activeTaskList.splice(index, 1)
         store.dispatch('startTask')
       } else {

@@ -57,7 +57,6 @@ export const store = createStore<State>({
   actions: {
     extract({ commit, state }, {task, pwd}) {
       return new Promise((resolve, reject) => {
-        console.log(sevenBin)
         const myStream = Seven[task.extractType](task.path, `${task.outputDir}\\`, {
           recursive: true,
           $bin: pathTo7zip,
@@ -66,7 +65,6 @@ export const store = createStore<State>({
           $progress: true,
         })
         myStream.on('data', function (data: any) {
-          console.log(data)
           task.extractFile.push(data.file)
         })
         myStream.on('progress', function (progress: any) {
@@ -98,7 +96,7 @@ export const store = createStore<State>({
         task.status = 'extract'
         
         let pwdList = task.password.split(';')
-        pwdList.unshift('0')
+        pwdList.push('0')
         for(let i = 0; i < pwdList.length; i++) {
           try {
             await store.dispatch('extract', {task: task, pwd: pwdList[i]})

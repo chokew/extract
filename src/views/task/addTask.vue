@@ -133,8 +133,7 @@ const confirm = () => {
   let activeTaskList = fileList.value.map(val => {
     let outputDir = ''
     if (form.outputType === '1') {
-      let arr = val.path.match(/(.*)\\\w+\.\w+/)
-      outputDir = arr[1]
+      outputDir = val.path.replace(val.name, '')
     } else if (form.outputType === '2') {
       let arr = val.path.match(/(.*)\.\w+/)
       outputDir = arr[1]
